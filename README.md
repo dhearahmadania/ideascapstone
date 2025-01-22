@@ -1,4 +1,4 @@
-# ✨ Sistem Manajememen dan Inventori Penjualan
+# ✨ Sistem Manajemen dan Inventori Penjualan
 
 ## 🌟 Fitur
 
