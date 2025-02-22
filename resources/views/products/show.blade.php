@@ -10,8 +10,6 @@
                 </h2>
             </div>
         </div>
-
-        @include('partials._breadcrumbs', ['model' => $product])
     </div>
 </div>
 
@@ -27,7 +25,7 @@
                                 {{ __('Foto Produk') }}
                             </h3>
 
-                            <img class="img-account-profile mb-2" src="{{ asset('assets/img/products/default.webp') }}" alt="" id="image-preview" />
+                            <img class="img-account-profile mb-2" src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.webp') }}" />
                         </div>
                     </div>
                 </div>
@@ -55,22 +53,30 @@
                                         <td>{{ $product->code }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Barcode</td>
-                                        <td>{!! $barcode !!}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Kategori</td>
                                         <td>
-                                            <a href="{{ route('categories.show', $product->category) }}" class="badge bg-blue-lt">
+                                            @if ($product->category)
+                                            <a href="{{ route('categories.show', $product->category->slug) }}">
                                                 {{ $product->category->name }}
                                             </a>
+                                            @else
+                                            <span class="text-danger">Kategori tidak tersedia</span>
+                                            @endif
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Satuan</td>
                                         <td>
-                                            <a href="{{ route('categories.show', $product->unit) }}" class="badge bg-blue-lt">
-                                                {{ $product->unit->short_code }}
+                                            @if ($product->category)
+                                            <a href="{{ route('categories.show', $product->category->slug) }}">
+                                                {{ $product->unit->slug }}
+                                            </a>
+                                            @else
+                                            <span class="text-danger">Satuan tidak tersedia</span>
+                                            @endif
+
+
                                             </a>
                                         </td>
                                     </tr>
@@ -79,6 +85,7 @@
                                         <td>Kuantitas</td>
                                         <td>{{ $product->quantity }}</td>
                                     </tr>
+                                    <!--
                                     <tr>
                                         <td>Peringatan Kuantitas</td>
                                         <td>
@@ -87,6 +94,7 @@
                                             </span>
                                         </td>
                                     </tr>
+-->
 
                                     <tr>
                                         <td>Harga Beli</td>
@@ -95,18 +103,6 @@
                                     <tr>
                                         <td>Harga Jual</td>
                                         <td>{{ $product->selling_price }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pajak</td>
-                                        <td>
-                                            <span class="badge bg-red-lt">
-                                                {{ $product->tax }} %
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tipe Pajak</td>
-                                        <td>{{ $product->tax_type->label() }}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ __('Catatan') }}</td>

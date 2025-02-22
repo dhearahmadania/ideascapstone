@@ -11,7 +11,9 @@ class UnitController extends Controller
     public function index()
     {
         $units = Unit::query()
-            ->select(['id', 'name', 'slug', 'short_code'])
+            ->select(['id', 'name', 'slug', 
+            // 'short_code'
+            ])
             ->get();
 
         return view('units.index', [

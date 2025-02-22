@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Order;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderStoreRequest;
-use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
@@ -32,7 +31,6 @@ class OrderController extends Controller
 
         return view('orders.create', [
             'carts' => Cart::content(),
-            'customers' => Customer::all(['id', 'name']),
             'products' => Product::with(['category', 'unit'])->get(),
         ]);
     }
@@ -66,9 +64,18 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->loadMissing(['customer', 'details'])->get();
+        $order->loadMissing(['details'])->get();
 
         return view('orders.show', [
+            'order' => $order,
+        ]);
+    }
+
+    public function detail(Order $order)
+    {
+        $order->loadMissing(['details'])->get();
+
+        return view('orders.detail', [
             'order' => $order,
         ]);
     }
@@ -99,9 +106,21 @@ class OrderController extends Controller
         $order->delete();
     }
 
+
+    public function dailyOrderReport()
+    {
+        $orders = Order::with(['details'])
+            ->whereDate('order_date', today()) // Ambil hanya pesanan hari ini
+            ->where('order_status', OrderStatus::COMPLETE) // Hanya pesanan yang sudah disetujui
+            ->get();
+    
+        return view('orders.daily-order', compact('orders'));
+    }
+    
+
     public function downloadInvoice($order)
     {
-        $order = Order::with(['customer', 'details'])
+        $order = Order::with([ 'details'])
             ->where('id', $order)
             ->first();
 

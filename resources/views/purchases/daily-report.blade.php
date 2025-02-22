@@ -34,7 +34,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No.</th>
-                                    <th scope="col">Nama Pelanggan</th>
+                                    <th scope="col">Nama Pemasok</th>
                                     <th scope="col">No. Pembelian</th>
                                     <th scope="col">Tanggal</th>
                                     <th scope="col">Jumlah Total</th>
@@ -48,17 +48,13 @@
                                     <td scope="row">{{ $loop->iteration }}</td>
                                     <td>{{ $purchase->supplier->name }}</td>
                                     <td>{{ $purchase->purchase_no }}</td>
-                                    <td>{{ $purchase->purchase_date ? $purchase->purchase_date->format('d-m-Y') : 'N/A' }}</td>
-                                    <td>{{ $purchase->total_amount }}</td>
+                                    <td>{{ $purchase->date ? $purchase->date->format('d-m-Y') : 'N/A' }}</td>
+                                    <td>Rp {{ number_format($purchase->total_amount, 0, ',', '.') }}</td>
                                     <td>
-                                        @if ($purchase->purchase_status == 1)
-                                            <span class="btn btn-success">Disetujui</span>
-                                        @else
-                                            <span class="btn btn-warning">Tertunda</span>
-                                        @endif
+                                    <span class="btn btn-{{ $purchase->status == 0 ? 'warning' : 'success' }} btn-sm text-uppercase">{{ $purchase->status == 0 ? 'tertunda' : 'disetujui' }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-primary btn-sm">Lihat Rincian</a>
                                     </td>
                                 </tr>
                                 @empty

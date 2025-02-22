@@ -7,7 +7,6 @@ namespace Database\Seeders;
 use App\Models\Order;
 use App\Models\Purchase;
 use App\Models\User;
-use App\Models\Customer;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 
@@ -26,10 +25,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $orders = Order::factory(50)->create();
-        $customers = Customer::factory(30)
-            ->recycle($orders)
-            ->create();
-
 
         $purchases = Purchase::factory(60)->create();
         $suppliers = Supplier::factory(20)->create();

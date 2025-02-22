@@ -51,8 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/quotations', QuotationController::class);
-    Route::resource('/customers', CustomerController::class);
+
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/categories', CategoryController::class);
     Route::resource('/units', UnitController::class);
@@ -62,11 +61,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/products/import', [ProductImportController::class, 'store'])->name('products.import.store');
     Route::get('/products/export', [ProductExportController::class, 'create'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
 
     // Route Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
     Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+Route::get('/orders/daily', [OrderController::class, 'dailyOrderReport'])->name('orders.dailyOrderReport');
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');

@@ -48,10 +48,8 @@
                     <tr>
                         <th scope="col" class="text-center">{{ __('No.') }}</th>
                         <th scope="col" class="text-center">{{ __('No. Invoice') }}</th>
-                        <th scope="col" class="text-center">{{ __('Pelanggan') }}</th>
                         <th scope="col" class="text-center">{{ __('Tanggal') }}</th>
                         <th scope="col" class="text-center">{{ __('Pembayaran') }}</th>
-                        <th scope="col" class="text-center">{{ __('Total') }}</th>
                         <th scope="col" class="text-center">{{ __('Status') }}</th>
                         <th scope="col" class="text-center">{{ __('Tindakan') }}</th>
                     </tr>
@@ -63,10 +61,8 @@
                                 {{ $loop->iteration }}
                             </td>
                             <td class="text-center">{{ $order->invoice_no }}</td>
-                            <td class="text-center">{{ $order->customer->name }}</td>
                             <td class="text-center">{{ $order->order_date->format('d-m-Y') }}</td>
                             <td class="text-center">{{ $order->payment_type }}</td>
-                            <td class="text-center">{{ Number::currency($order->total, 'IDR') }}</td>
                             <td class="text-center">
                                 <span class="badge bg-orange text-white text-uppercase">
                                     {{ \App\Enums\OrderStatus::PENDING->label() }}

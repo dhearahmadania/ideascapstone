@@ -13,7 +13,6 @@ class OrderCompleteController extends Controller
     {
         $orders = Order::query()
             ->where('order_status', OrderStatus::COMPLETE)
-            ->with('customer')
             ->latest()
             ->get();
 

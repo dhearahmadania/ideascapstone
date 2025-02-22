@@ -28,7 +28,6 @@
                         <tr>
                             <th scope="col" class="text-center">No.</th>
                             <th scope="col" class="text-center">No. Invoice</th>
-                            <th scope="col" class="text-center">Pelanggan</th>
                             <th scope="col" class="text-center">Tanggal</th>
                             <th scope="col" class="text-center">Pembayaran</th>
                             <th scope="col" class="text-center">Telah dibayar</th>
@@ -44,9 +43,6 @@
                             </td>
                             <td class="text-center">
                                 {{ $order->invoice_no }}
-                            </td>
-                            <td class="text-center">
-                                {{ $order->customer->name }}
                             </td>
                             <td class="text-center">
                                 {{ $order->order_date->format('d-m-Y') }}

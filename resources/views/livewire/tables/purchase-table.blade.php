@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
@@ -51,13 +51,12 @@
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('supplier_id')" href="#" role="button">
-                            {{ __('Pelanggan') }}
+                            {{ __('Pemasok') }}
                             @include('inclues._sort-icon', ['field' => 'supplier_id'])
                         </a>
-                    </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('date')" href="#" role="button">
-                            {{ __('Tangga') }}
+                            {{ __('Tanggal') }}
                             @include('inclues._sort-icon', ['field' => 'date'])
                         </a>
                     </th>
@@ -79,7 +78,7 @@
                 </tr>
             </thead>
             <tbody>
-            @forelse ($purchases as $purchase)
+                @forelse ($purchases as $purchase)
                 <tr>
                     <td class="align-middle text-center">
                         {{ $loop->iteration }}
@@ -97,28 +96,25 @@
                         {{ Number::currency($purchase->total_amount, 'IDR') }}
                     </td>
 
-                    @if ($purchase->status === \App\Enums\PurchaseStatus::APPROVED)
-                        <td class="align-middle text-center">
-                            <span class="badge bg-green text-white text-uppercase">
-                                {{ __('DISETUJUI') }}
-                            </span>
-                        </td>
-                        <td class="align-middle text-center">
-                            <x-button.show class="btn-icon" route="{{ route('purchases.show', $purchase) }}"/>
-
-                            <x-button.edit class="btn-icon" route="{{ route('purchases.edit', $purchase) }}"/>
-                        </td>
-                    @else
-                        <td class="align-middle text-center">
-                            <span class="badge bg-orange text-white text-uppercase">
-                                {{ __('TERTUNDA') }}
-                            </span>
-                        </td>
-                        <td class="align-middle text-center" style="width: 5%">
-                            <x-button.show class="btn-icon" route="{{ route('purchases.show', $purchase) }}"/>
-                            <x-button.edit class="btn-icon" route="{{ route('purchases.edit', $purchase) }}"/>
-                            <x-button.delete class="btn-icon" route="{{ route('purchases.delete', $purchase) }}"/>
-                        </td>
+                    @if ($purchase->status == 1)
+                    <td class="align-middle text-center">
+                        <span class="badge bg-green text-white text-uppercase">
+                            {{ __('DISETUJUI') }}
+                        </span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <x-button.show class="btn-icon" route="{{ route('purchases.show', $purchase) }}" />
+                    </td>
+                    @elseif ($purchase->status == 0)
+                    <td class="align-middle text-center">
+                        <span class="badge bg-orange text-white text-uppercase">
+                            {{ __('TERTUNDA') }}
+                        </span>
+                    </td>
+                    <td class="align-middle text-center" style="width: 5%">
+                        <x-button.show class="btn-icon" route="{{ route('purchases.show', $purchase) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('purchases.delete', $purchase) }}" />
+                    </td>
                     @endif
                 </tr>
                 @empty
@@ -127,7 +123,7 @@
                         Tidak ada data yang ditemukan
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -139,7 +135,7 @@
         </p>
 
         <ul class="pagination m-0 ms-auto">
-        {{ $purchases->links() }}
+            {{ $purchases->links() }}
         </ul>
     </div>
 </div>

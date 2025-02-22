@@ -17,7 +17,6 @@ class Order extends Model
     ];
 
     protected $fillable = [
-        'customer_id',
         'order_date',
         'order_status',
         'total_products',
@@ -36,11 +35,6 @@ class Order extends Model
         'updated_at'    => 'datetime',
         'order_status'  => OrderStatus::class
     ];
-
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
 
     public function details(): HasMany
     {

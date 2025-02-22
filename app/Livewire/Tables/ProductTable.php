@@ -11,18 +11,14 @@ class ProductTable extends Component
     use WithPagination;
 
     public $perPage = 10;
-
     public $search = '';
-
     public $sortField = 'id';
-
     public $sortAsc = false;
 
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
-            $this->sortAsc = ! $this->sortAsc;
-
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -35,7 +31,7 @@ class ProductTable extends Component
         return view('livewire.tables.product-table', [
             'products' => Product::query()
                 ->with(['category', 'unit'])
-                ->search($this->search)
+                ->where('name', 'like', '%' . $this->search . '%')
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ]);

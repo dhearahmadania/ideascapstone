@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Order;
 
 use App\Models\Order;
-use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +12,6 @@ class DueOrderController extends Controller
     {
         $orders = Order::where('due', '>', '0')
             ->latest()
-            ->with('customer')
             ->paginate();
 
         return view('due.index', [
@@ -23,8 +21,6 @@ class DueOrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->loadMissing(['customer', 'details'])->get();
-
         return view('due.show', [
            'order' => $order
         ]);
@@ -32,13 +28,8 @@ class DueOrderController extends Controller
 
     public function edit(Order $order)
     {
-        $order->loadMissing(['customer', 'details'])->get();
-
-        $customers = Customer::select(['id', 'name'])->get();
-
         return view('due.edit', [
             'order' => $order,
-            'customers' => $customers
         ]);
     }
 

@@ -43,21 +43,41 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        $product = Product::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'unit_id' => 'required|exists:units,id',
+            'buying_price' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'quantity_alert' => 'nullable|integer|min:0',
+            'product_image' => 'nullable|image|mimes:jpg,png|max:2048',
+            'notes' => 'nullable|string',
+        ]);
 
-        /**
-         * Handle upload image
-         */
+        // Validasi input sudah ditangani oleh StoreProductRequest
+
+        // Buat produk dengan data yang diterima dari request
+        $product = new Product($request->all());
+
+        // Generate kode produk otomatis
+        $product->code = Product::generateCode();
+
+        // Simpan produk ke database
+        $product->save();
+
+        // Handle upload image jika ada
         if ($request->hasFile('product_image')) {
             $file = $request->file('product_image');
             $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
 
+            // Simpan file ke storage
             $file->storeAs('products/', $filename, 'public');
-            $product->update([
-                'product_image' => $filename
-            ]);
+
+            // Update produk dengan nama file gambar
+            $product->update(['product_image' => $filename]);
         }
 
         return redirect()
@@ -65,27 +85,24 @@ class ProductController extends Controller
             ->with('berhasil', 'Produk berhasil dibuat!');
     }
 
+
     public function show(Product $product)
     {
-        // Generate a barcode
-        $generator = new BarcodeGeneratorHTML();
-
-        $barcode = $generator->getBarcode($product->code, $generator::TYPE_CODE_128);
 
         return view('products.show', [
             'product' => $product,
-            'barcode' => $barcode,
         ]);
     }
 
-    public function edit(Product $product)
+    public function edit($slug)
     {
-        return view('products.edit', [
-            'categories' => Category::all(),
-            'units' => Unit::all(),
-            'product' => $product
-        ]);
+        $product = Product::where('slug', $slug)->firstOrFail();
+        $categories = Category::all();
+        $units = Unit::all();
+
+        return view('products.edit', compact('product', 'categories', 'units'));
     }
+
 
     public function update(UpdateProductRequest $request, Product $product)
     {
@@ -97,7 +114,7 @@ class ProductController extends Controller
             if ($product->product_image && file_exists(public_path('storage/products/') . $product->product_image)) {
                 unlink(public_path('storage/products/') . $product->product_image);
             }
-            
+
 
             // Prepare New Photo
             $file = $request->file('product_image');
@@ -113,7 +130,7 @@ class ProductController extends Controller
         }
 
         return redirect()
-            ->route('products.index')
+            ->route('products.show', $product->name)
             ->with('berhasil', 'Produk berhasil diperbarui!');
     }
 

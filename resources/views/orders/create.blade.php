@@ -49,32 +49,7 @@
                                         @enderror
                                     </div>
 
-                                    <x-tom-select
-                                        label="Pelanggan"
-                                        id="customer_id"
-                                        name="customer_id"
-                                        placeholder="Pilih Pelanggan"
-                                        :data="$customers"
-                                    />
-
-                                    <div class="col-md-4">
-                                        <label for="reference" class="form-label required">
-                                            {{ __('Kode Pesanan') }}
-                                        </label>
-
-                                        <input type="text" class="form-control"
-                                                id="reference"
-                                                name="reference"
-                                                value="ORDR"
-                                                readonly
-                                        >
-
-                                        @error('reference')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                        @enderror
-                                    </div>
+                                    
                                 </div>
 
                                 <livewire:order-form :cart-instance="'order'" />

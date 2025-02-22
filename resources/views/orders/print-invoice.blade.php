@@ -45,19 +45,12 @@
                                                 Tanggal Invoice:
                                             </h4>
                                             <p class="invo-addr-1">
-                                                {{ $order->order_date }}
+                                            {{ Carbon\Carbon::now()->format('M d, Y') }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6 mb-50">
-                                        <h4 class="inv-title-1">Pelanggan</h4>
-                                        <p class="inv-from-1">{{ $order->customer->name }}</p>
-                                        <p class="inv-from-1">{{ $order->customer->phone }}</p>
-                                        <p class="inv-from-1">{{ $order->customer->email }}</p>
-                                        <p class="inv-from-2">{{ $order->customer->address }}</p>
-                                    </div>
                                     <div class="col-sm-6 text-end mb-50">
                                         <h4 class="inv-title-1">Toko</h4>
                                         <p class="inv-from-1">Buah Bu Har</p>
@@ -101,32 +94,12 @@
                                             <tr>
                                                 <td colspan="3" class="text-end">
                                                     <strong>
-                                                        Subtotal
+                                                        Total
                                                     </strong>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <strong>
                                                         {{ Number::currency($order->sub_total, 'IDR') }}
-                                                    </strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" class="text-end">
-                                                    <strong>Pajak</strong>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <strong>
-                                                        {{ Number::currency($order->vat, 'IDR') }}
-                                                    </strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" class="text-end">
-                                                    <strong>Total</strong>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <strong>
-                                                        {{ Number::currency($order->total, 'IDR') }}
                                                     </strong>
                                                 </td>
                                             </tr>

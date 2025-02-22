@@ -59,7 +59,7 @@
                         @include('livewire-powergrid::components.row', ['rowIndex' => $loop->index + 1])
                         <tr
                             x-show="detailState"
-                            style="{{ $theme->table->trBodyStyle }}"
+                            styles="{{ $theme->table->trBodyStyle }}"
                             {{ $trAttributesBag }}
                         >
                             @include('livewire-powergrid::components.table.detail')
@@ -68,7 +68,7 @@
                 @else
                     <tr
                         wire:key="tbody-{{ $row->{$primaryKey} }}"
-                        style="{{ $theme->table->trBodyStyle }}"
+                        styles="{{ $theme->table->trBodyStyle }}"
                         {{ $trAttributesBag }}
                     >
                         @include('livewire-powergrid::components.row', ['rowIndex' => $loop->index + 1])

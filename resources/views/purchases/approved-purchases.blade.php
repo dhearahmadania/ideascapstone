@@ -23,7 +23,7 @@
                         <tr>
                             <th scope="col" class="align-middle text-center w-1">No.</th>
                             <th scope="col" class="align-middle text-center">Pembelian</th>
-                            <th scope="col" class="align-middle text-center">Pelanggan</th>
+                            <th scope="col" class="align-middle text-center">Pemasok</th>
                             <th scope="col" class="align-middle text-center">Tanggal</th>
                             <th scope="col" class="align-middle text-center">Total</th>
                             <th scope="col" class="align-middle text-center">Status</th>
@@ -43,13 +43,13 @@
                                 {{ $purchase->supplier->name }}
                             </td>
                             <td class="align-middle text-center">
-                                {{ $purchase->purchase_date ? $purchase->purchase_date->format('d-m-Y') : 'N/A' }}
+                                {{ $purchase->date ? $purchase->date->format('d-m-Y') : 'N/A' }}
                             </td>
                             <td class="align-middle text-center">
                                 {{ Number::currency($purchase->total_amount, 'IDR') }}
                             </td>
                             <td class="align-middle text-center">
-                                <span class="btn btn-{{ $purchase->purchase_status == 0 ? 'warning' : 'success' }} btn-sm text-uppercase">{{ $purchase->purchase_status == 0 ? 'tertunda' : 'approved' }}</span>
+                                <span class="btn btn-{{ $purchase->status == 1 ? 'success' : 'warning' }} btn-sm text-uppercase">{{ $purchase->status == 1 ? 'disetujui' : 'tertunda' }}</span>
                             </td>
                             <td class="align-middle text-center">
                                 <a href="{{ route('purchases.show', $purchase) }}" class="btn btn-icon btn-outline-info">

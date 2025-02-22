@@ -13,7 +13,6 @@ class OrderPendingController extends Controller
     {
         $orders = Order::query()
             ->where('order_status', OrderStatus::PENDING)
-            ->with('customer')
             ->latest()
             ->get();
 

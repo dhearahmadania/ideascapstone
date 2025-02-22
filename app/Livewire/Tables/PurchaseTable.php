@@ -22,7 +22,6 @@ class PurchaseTable extends Component
     {
         if ($this->sortField === $field) {
             $this->sortAsc = ! $this->sortAsc;
-
         } else {
             $this->sortAsc = true;
         }
@@ -34,10 +33,19 @@ class PurchaseTable extends Component
     {
         return view('livewire.tables.purchase-table', [
             'purchases' => Purchase::query()
-                ->with('supplier')
-                ->search($this->search)
+                ->with('supplier') // Pastikan supplier di-load
+                ->search($this->search) // Gunakan scopeSearch
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ]);
+    }
+    
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('purchase_no', 'like', "%{$search}%")
+            ->orWhereHas('supplier', function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            });
     }
 }

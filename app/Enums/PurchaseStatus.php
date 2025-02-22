@@ -10,8 +10,17 @@ enum PurchaseStatus: int
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => __('Tertunda'),
-            self::APPROVED => __('Disetujui'),
+            self::PENDING => 'Tertunda',
+            self::APPROVED => 'Disetujui',
         };
+    }
+
+    // Tambahkan fungsi untuk mendapatkan semua status
+    public static function all(): array
+    {
+        return [
+            self::PENDING->value => self::PENDING->label(),
+            self::APPROVED->value => self::APPROVED->label(),
+        ];
     }
 }

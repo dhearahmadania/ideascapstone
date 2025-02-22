@@ -34,11 +34,12 @@ class PurchaseController extends Controller
         return view('purchases.approved-purchases', [
             'purchases' => $purchases,
         ]);
+        
     }
 
     public function show(Purchase $purchase)
     {
-        $purchase->loadMissing(['supplier', 'details', 'createdBy', 'updatedBy'])->get();
+        $purchase->loadMissing(['supplier', 'details', 'createdBy', 'updatedBy']);
 
         $products = PurchaseDetails::where('purchase_id', $purchase->id)->get();
 
@@ -80,8 +81,8 @@ class PurchaseController extends Controller
                 $pDetails['purchase_id'] = $purchase['id'];
                 $pDetails['product_id'] = $product['product_id'];
                 $pDetails['quantity'] = $product['quantity'];
-                $pDetails['unitcost'] = $product['unitcost'];
-                $pDetails['total'] = $product['total'];
+                $pDetails['unitcost'] = floatval(str_replace(',', '', $product['unitcost']));
+                $pDetails['total'] = floatval(str_replace(',', '', $product['total']));
                 $pDetails['created_at'] = Carbon::now();
 
                 //PurchaseDetails::insert($pDetails);
@@ -96,24 +97,29 @@ class PurchaseController extends Controller
 
     public function update(Purchase $purchase, Request $request)
     {
+        // Ambil detail produk dari pembelian
         $products = PurchaseDetails::where('purchase_id', $purchase->id)->get();
 
         foreach ($products as $product) {
             Product::where('id', $product->product_id)
-                ->update(['quantity' => DB::raw('quantity+'.$product->quantity)]);
+                ->update(['quantity' => DB::raw('quantity + ' . $product->quantity)]);
         }
 
-        Purchase::findOrFail($purchase->id)
-            ->update([
-                //'purchase_status' => 1, // 1 = approved, 0 = pending
-                'status' => PurchaseStatus::APPROVED,
-                'updated_by' => auth()->user()->id,
-            ]);
+        // Pastikan status berubah menjadi APPROVED
+        $success = $purchase->update([
+            'status' => PurchaseStatus::APPROVED->value, // Pastikan enum dikonversi ke integer
+            
+        ]);
+
+        if (!$success) {
+            return back()->with('gagal', 'Gagal menyetujui pembelian.');
+        }
 
         return redirect()
             ->route('purchases.index')
             ->with('berhasil', 'Pembelian berhasil disetujui!');
     }
+
 
     public function destroy(Purchase $purchase)
     {
@@ -124,16 +130,18 @@ class PurchaseController extends Controller
             ->with('berhasil', 'Pembelian berhasil dihapus!');
     }
 
+    
+
     public function dailyPurchaseReport()
     {
         $purchases = Purchase::with(['supplier'])
-            //->where('purchase_status', 1)
-            ->where('date', today()->format('Y-m-d'))->get();
+            ->whereDate('date', today()) // Menggunakan whereDate agar cocok dengan format datetime
+            ->where('status', PurchaseStatus::APPROVED) // Hanya pesanan yang sudah disetujui
+            ->get();
 
-        return view('purchases.daily-report', [
-            'purchases' => $purchases,
-        ]);
+        return view('purchases.daily-report', compact('purchases'));
     }
+
 
     public function getPurchaseReport()
     {
@@ -157,7 +165,7 @@ class PurchaseController extends Controller
             ->join('purchases', 'purchase_details.purchase_id', '=', 'purchases.id')
             ->join('users', 'users.id', '=', 'purchases.created_by')
             ->whereBetween('purchases.purchase_date', [$sDate, $eDate])
-            ->where('purchases.purchase_status', '1')
+            ->where('purchases.status', '1')
             ->select('purchases.purchase_no', 'purchases.purchase_date', 'purchases.supplier_id', 'products.code', 'products.name', 'purchase_details.quantity', 'purchase_details.unitcost', 'purchase_details.total', 'users.name as created_by')
             ->get();
 

@@ -6,15 +6,15 @@ enum SupplierType: string
 {
     case DISTRIBUTOR = 'distributor';
 
-    case WHOLESALER = 'wholesaler';
+    case GROSIR = 'grosir';
 
-    case PRODUCER = 'producer';
+    case PRODUCER = 'produsen';
 
     public function label(): string
     {
         return match ($this) {
             self::DISTRIBUTOR => __('Distributor'),
-            self::WHOLESALER => __('Grosir'),
+            self::GROSIR => __('Grosir'),
             self::PRODUCER => __('Produsen'),
         };
     }

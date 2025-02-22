@@ -42,7 +42,7 @@ class ProfileController extends Controller
         if ($file = $request->file('photo'))
         {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/profile/';
+            $path = 'storage/app/public/profile/';
 
             /**
              * Delete an image if exists.

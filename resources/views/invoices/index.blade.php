@@ -29,11 +29,6 @@
                                         <h1>Toko Buah Bu Har</h1>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-6">
-                                    <div class="invoice">
-                                        <h1>Invoice # <span>123456</span></h1>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="invoice-info">
@@ -48,13 +43,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 mb-50">
-                                    <h4 class="inv-title-1">Pelanggan</h4>
-                                    <p class="inv-from-1">{{ $customer->name }}</p>
-                                    <p class="inv-from-1">{{ $customer->phone }}</p>
-                                    <p class="inv-from-1">{{ $customer->email }}</p>
-                                    <p class="inv-from-2">{{ $customer->address }}</p>
-                                </div>
                                 <div class="col-sm-6 text-end mb-50">
                                     <h4 class="inv-title-1">Toko</h4>
                                     <p class="inv-from-1">Buah Bu Har</p>
@@ -85,21 +73,9 @@
                                         </tr>
                                         @endforeach
                                         <tr>
-                                            <td colspan="3" class="text-end"><strong>Subtotal</strong></td>
-                                            <td class="text-center">
-                                                <strong>{{ Cart::subtotal() }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="text-end"><strong>Pajak</strong></td>
-                                            <td class="text-center">
-                                                <strong>{{ Cart::tax() }}</strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <td colspan="3" class="text-end"><strong>Total</strong></td>
                                             <td class="text-center">
-                                                <strong>{{ Cart::total() }}</strong>
+                                                <strong>{{ Cart::subtotal() }}</strong>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -135,22 +111,20 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title text-center mx-auto" id="modalCenterTitle">Invoice dari {{ $customer->name }}<br/>Jumlah Total Rp.{{ Cart::total() }}</h3>
+                    <h3 class="modal-title text-center mx-auto" id="modalCenterTitle">Jumlah Total Rp.{{ Cart::subtotal() }}</h3>
                 </div>
 
                 <form action="{{ route('orders.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="modal-body">
-                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
                             <div class="mb-3">
                                 <!-- Form Group (type of product category) -->
-                                <label class="small mb-1" for="payment_type">Pembayaran <span class="text-danger">*</span></label>
+                                <label class="small mb-1" for="payment_type">Tipe Pembayaran <span class="text-danger">*</span></label>
                                 <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type">
                                     <option selected="" disabled="">Pilih pembayaran:</option>
                                     <option value="Tunai">Tunai</option>
                                     <option value="QRIS">QRIS</option>
-                                    <option value="Kredit">Kredit</option>
                                 </select>
                                 @error('payment_type')
                                 <div class="invalid-feedback">
@@ -160,7 +134,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="small mb-1" for="pay">Bayar Sekarang <span class="text-danger">*</span></label>
+                                <label class="small mb-1" for="pay">Nominal Bayar<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-solid @error('pay') is-invalid @enderror" id="pay" name="pay" placeholder="" value="{{ old('pay') }}" autocomplete="off"/>
                                 @error('pay')
                                 <div class="invalid-feedback">

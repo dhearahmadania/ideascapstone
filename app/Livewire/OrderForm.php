@@ -55,7 +55,7 @@ class OrderForm extends Component
     {
         foreach ($this->invoiceProducts as $key => $invoiceProduct) {
             if (! $invoiceProduct['is_saved']) {
-                $this->addError('invoiceProducts.'.$key, 'Baris ini harus disimpan sebelum membuat yang baru.');
+                $this->addError('invoiceProducts.' . $key, 'Baris ini harus disimpan sebelum membuat yang baru.');
 
                 return;
             }
@@ -74,7 +74,7 @@ class OrderForm extends Component
     {
         foreach ($this->invoiceProducts as $key => $invoiceProduct) {
             if (! $invoiceProduct['is_saved']) {
-                $this->addError('invoiceProducts.'.$key, 'Baris ini harus disimpan sebelum mengedit baris lainnya.');
+                $this->addError('invoiceProducts.' . $key, 'Baris ini harus disimpan sebelum mengedit baris lainnya.');
 
                 return;
             }
@@ -87,48 +87,60 @@ class OrderForm extends Component
     {
         $this->resetErrorBag();
 
-        $product = $this->allProducts
-            ->find($this->invoiceProducts[$index]['product_id']);
+        $product = $this->allProducts->find($this->invoiceProducts[$index]['product_id']);
 
         $this->invoiceProducts[$index]['product_name'] = $product->name;
-        $this->invoiceProducts[$index]['product_price'] = $product->buying_price;
+        $this->invoiceProducts[$index]['product_price'] = $product->selling_price;
         $this->invoiceProducts[$index]['is_saved'] = true;
 
-        //
         $cart = Cart::instance($this->cart_instance);
 
         $exists = $cart->search(function ($cartItem) use ($product) {
-            return $cartItem->id === $product['id'];
+            return $cartItem->id === $product->id;  // <-- HARUS MENGGUNAKAN ID DARI PRODUK
         });
 
         if ($exists->isNotEmpty()) {
-            session()->flash('message', 'Produk ada di keranjang!');
-
-            // not working correctly
-            //unset($this->invoiceProducts[$index]);
-
+            session()->flash('message', 'Produk sudah ada di keranjang!');
             return;
         }
 
-        $cart->add([
-            'id' => $product['id'],
-            'name' => $product['name'],
-            'price' => $product['buying_price'],
-            'qty' => $this->invoiceProducts[$index]['quantity'], //form field
+        // Tambahkan produk ke cart dan simpan rowId-nya
+        $cartItem = $cart->add([
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->selling_price,
+            'qty' => $this->invoiceProducts[$index]['quantity'],
             'weight' => 1,
-            'options' => [
-                'code' => $product['code'],
-            ],
+            'options' => ['code' => $product->code],
         ]);
+
+        // Simpan rowId dalam invoiceProducts
+        $this->invoiceProducts[$index]['rowId'] = $cartItem->rowId;
     }
 
     public function removeProduct($index): void
     {
-        unset($this->invoiceProducts[$index]);
+        // Pastikan produk ada sebelum dihapus
+        if (!isset($this->invoiceProducts[$index])) {
+            return;
+        }
 
+        $product = $this->invoiceProducts[$index];
+
+        // Hapus dari cart hanya jika rowId tersedia
+        if (isset($product['rowId'])) {
+            try {
+                Cart::instance($this->cart_instance)->remove($product['rowId']);
+            } catch (\Exception $e) {
+                \Log::error("Gagal menghapus produk dari cart: " . $e->getMessage());
+            }
+        }
+
+        // Hapus dari array invoiceProducts
+        unset($this->invoiceProducts[$index]);
         $this->invoiceProducts = array_values($this->invoiceProducts);
 
-        //
-        //Cart::instance($this->cart_instance)->remove($index);
+        // Refresh tampilan
+        $this->dispatch('refreshInvoice');
     }
 }

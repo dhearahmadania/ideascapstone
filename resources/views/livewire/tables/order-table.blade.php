@@ -49,11 +49,6 @@
                             @include('inclues._sort-icon', ['field' => 'invoice_no'])
                         </a>
                     </th>
-                    <th scope="col" class="align-middle text-center">
-                        <a wire:click.prevent="sortBy('customer_id')" href="#" role="button">
-                            {{ __('Pelanggan') }}
-                            @include('inclues._sort-icon', ['field' => 'customer_id'])
-                        </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('order_date')" href="#" role="button">
@@ -93,9 +88,6 @@
                     <td class="align-middle text-center">
                         {{ $order->invoice_no }}
                     </td>
-                    <td class="align-middle">
-                        {{ $order->customer->name }}
-                    </td>
                     <td class="align-middle text-center">
                         {{ $order->order_date->format('d-m-Y') }}
                     </td>
@@ -103,7 +95,7 @@
                         {{ $order->payment_type }}
                     </td>
                     <td class="align-middle text-center">
-                        {{ Number::currency($order->total, 'IDR') }}
+                        {{ Number::currency($order->sub_total, 'IDR') }}
                     </td>
                     <td class="align-middle text-center">
                         <x-status dot color="{{ $order->order_status === \App\Enums\OrderStatus::COMPLETE ? 'green' : 'orange' }}"

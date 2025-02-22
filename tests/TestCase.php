@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\Models\Category;
-use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Unit;
@@ -44,13 +43,6 @@ abstract class TestCase extends BaseTestCase
     {
         return Unit::factory()->create([
             'name' => 'piece'
-        ]);
-    }
-
-    public function createCustomer()
-    {
-        return Customer::factory()->create([
-            'name' => 'Customer 1'
         ]);
     }
 

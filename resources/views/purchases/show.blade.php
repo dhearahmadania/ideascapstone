@@ -70,7 +70,7 @@
 
                         <div class="col">
                             <label for="supplier" class="small mb-1">
-                                {{ __('Pelanggan') }}
+                                {{ __('Pemasok') }}
                             </label>
                             <input type="text" id="supplier"
                                    class="form-control"

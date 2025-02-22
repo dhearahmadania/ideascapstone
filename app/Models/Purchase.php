@@ -30,13 +30,15 @@ class Purchase extends Model
         'date'       => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'status'     => PurchaseStatus::class
+        'status'     => 'integer'
     ];
 
-    public function supplier(): BelongsTo
+
+    public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
 
     public function createdBy(): BelongsTo
     {
@@ -53,10 +55,11 @@ class Purchase extends Model
         return $this->hasMany(PurchaseDetails::class);
     }
 
-    public function scopeSearch($query, $value): void
+    public function scopeSearch($query, $search)
     {
-        $query->where('purchase_no', 'like', "%{$value}%")
-            ->orWhere('status', 'like', "%{$value}%")
-        ;
+        return $query->where('purchase_no', 'like', "%{$search}%")
+            ->orWhereHas('supplier', function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            });
     }
 }

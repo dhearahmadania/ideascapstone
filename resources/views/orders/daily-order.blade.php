@@ -1,48 +1,35 @@
 @extends('layouts.tabler')
 
 @section('content')
-<div class="page-body">
-    @if($orders->isEmpty())
-    <div class="empty">
-        <div class="empty-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <circle cx="12" cy="12" r="9" />
-                <line x1="9" y1="10" x2="9.01" y2="10" />
-                <line x1="15" y1="10" x2="15.01" y2="10" />
-                <path d="M9.5 15.25a3.5 3.5 0 0 1 5 0" />
-            </svg>
-        </div>
-        <p class="empty-title">
-            Belum ada Pesanan tersimpan
-        </p>
-        <p class="empty-subtitle text-secondary">
-            Coba cari dengan kata kunci lain atau pilih Pesanan yang berbeda.
-        </p>
-        <div class="empty-action">
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
-                Tambahkan Pesanan pertama
-            </a>
-        </div>
-    </div>
-    @else
-    <div class="container-xl">
-        <div class="card">
-            <div class="card-header">
-                <div>
-                    <h3 class="card-title">
-                        {{ __('Pesanan: Selesai') }}
-                    </h3>
-                </div>
-
-                <div class="card-actions">
-                    <a href="{{ route('orders.create') }}" class="btn btn-icon btn-outline-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                    </a>
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-xl px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                        </div>
+                        Laporan Pesanan Harian - {{ today()->format('d-m-Y') }}
+                    </h1>
                 </div>
             </div>
-            <div class="table-responsive">
+        </div>
+    </div>
+</header>
+
+<div class="container-xl px-4">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Daftar Pesanan
+                </div>
+                <div class="card-body">
+                <div class="table-responsive">
                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable">
                     <thead class="thead-light">
                         <tr>
@@ -80,11 +67,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">
-                {{--- ---}}
+                </div>
             </div>
         </div>
     </div>
-    @endif
 </div>
 @endsection

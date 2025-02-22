@@ -12,8 +12,6 @@
                     </h1>
                 </div>
             </div>
-
-            @include('partials._breadcrumbs')
         </div>
     </div>
 </header>
@@ -22,7 +20,6 @@
     <form action="{{ route('purchases.getReportPurchase') }}" method="POST">
         @csrf
         <div class="row">
-
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header">
@@ -30,18 +27,29 @@
                     </div>
                     <div class="card-body">
                         <div class="row gx-3 mb-3">
+                            <!-- Tanggal Mulai -->
                             <div class="col-md-6">
                                 <label class="small my-1" for="start_date">Tanggal Mulai <span class="text-danger">*</span></label>
-                                <input class="form-control form-control-solid example-date-input @error('start_date') is-invalid @enderror" name="start_date" id="date" type="date" value="{{ old('start_date') }}">
-                                @error('purchase_date')
+                                <input class="form-control form-control-solid example-date-input @error('start_date') is-invalid @enderror" 
+                                       name="start_date" 
+                                       id="start_date" 
+                                       type="date" 
+                                       value="{{ old('start_date') }}">
+                                @error('start_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                                 @enderror
                             </div>
+
+                            <!-- Tanggal Selesai -->
                             <div class="col-md-6">
                                 <label class="small my-1" for="end_date">Tanggal Selesai <span class="text-danger">*</span></label>
-                                <input class="form-control form-control-solid example-date-input @error('end_date') is-invalid @enderror" name="end_date" id="date" type="date" value="{{ old('end_date') }}">
+                                <input class="form-control form-control-solid example-date-input @error('end_date') is-invalid @enderror" 
+                                       name="end_date" 
+                                       id="end_date" 
+                                       type="date" 
+                                       value="{{ old('end_date') }}">
                                 @error('end_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -51,7 +59,7 @@
                         </div>
 
                         <button class="btn btn-primary" type="submit">Simpan</button>
-                        <a class="btn btn-danger" href="{{ URL::previous() }}">Batal</a>
+                        <a class="btn btn-danger" href="{{ route('purchases.index') }}">Batal</a>
                     </div>
                 </div>
             </div>

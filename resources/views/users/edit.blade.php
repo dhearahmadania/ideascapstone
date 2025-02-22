@@ -11,7 +11,6 @@
             </div>
         </div>
 
-        @include('partials._breadcrumbs', ['model' => $user])
     </div>
 </div>
 

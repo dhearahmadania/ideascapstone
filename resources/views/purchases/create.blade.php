@@ -69,18 +69,6 @@
                                         :data="$suppliers"
                                     />
 
-                                    <div class="col-md-4">
-                                        <label for="reference" class="form-label required">
-                                            {{ __('Kode Pembelian') }}
-                                        </label>
-
-                                        <input type="text" class="form-control"
-                                               id="reference"
-                                               name="reference"
-                                               value="PRS"
-                                               readonly
-                                        >
-
                                         @error('reference')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -92,7 +80,7 @@
                                 @livewire('purchase-form')
                             </div>
 
-                            <div class="card-footer text-end">
+                            <div class="d-flex justify-content-end gap-2 mt-3 card-footer text-end">
                                 {{--- onclick="return confirm('Are you sure you want to purchase?')" ---}}
                                 {{--- @disabled($errors->isNotEmpty()) ---}}
                                 <button type="submit" class="btn btn-primary">

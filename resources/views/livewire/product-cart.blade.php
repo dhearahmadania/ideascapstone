@@ -25,7 +25,6 @@
                     <th class="align-middle text-center">Stok</th>
                     <th class="align-middle text-center">Kuantitas</th>
                     <th class="align-middle text-center">Potongan Harga</th>
-                    <th class="align-middle text-center">Pajak</th>
                     <th class="align-middle text-center">Sub Total</th>
                     <th class="align-middle text-center">Tindakan</th>
                 </tr>
@@ -107,10 +106,6 @@
             <div class="table-responsive">
                 <table class="table table-striped">
                     <tr>
-                        <th>Pajak ({{ $global_tax }}%)</th>
-                        <td>(+) {{ format_currency(Cart::instance($cart_instance)->tax()) }}</td>
-                    </tr>
-                    <tr>
                         <th>Potongan Harga ({{ $global_discount }}%)</th>
                         <td>(-) {{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>
                     </tr>
@@ -134,22 +129,6 @@
     </div>
 
     <input type="hidden" name="total_amount" value="{{ $total_with_shipping }}">
-
-    <div class="row gx-3 mb-3">
-        <div class="col">
-            <label for="tax_percentage" class="small mb-1">
-                Pajak (%)
-            </label>
-
-            <input type="number"
-                   id="tax_percentage"
-                   name="tax_percentage"
-                   wire:model.blur="global_tax"
-                   class="form-control"
-                   min="0" max="100" value="{{ $global_tax }}"
-                   required
-            >
-        </div>
 
         <div class="col">
             <label for="discount_percentage" class="small mb-1">Potongan Harga (%)</label>

@@ -54,18 +54,6 @@
                             </div>
 
                             <div class="col">
-                                <label for="customer" class="form-label required">
-                                    {{ __('Pelanggan') }}
-                                </label>
-                                <input type="text"
-                                       id="customer"
-                                       class="form-control"
-                                       value="{{ $order->customer->name }}"
-                                       disabled
-                                >
-                            </div>
-
-                            <div class="col">
                                 <label for="payment_type" class="form-label required">
                                     {{ __('Tipe Pembayaran') }}
                                 </label>
@@ -112,10 +100,10 @@
                                             {{ $item->quantity }}
                                         </td>
                                         <td class="align-middle text-center">
-                                            {{ number_format($item->unitcost, 2) }}
+                                            {{ number_format($item->unitcost, 2,'.',',') }}
                                         </td>
                                         <td class="align-middle text-center">
-                                            {{ number_format($item->total, 2) }}
+                                            {{ number_format($item->subtotal, 2,'.',',') }}
                                         </td>
                                     </tr>
                                     @endforeach
@@ -123,19 +111,11 @@
                                         <td colspan="6" class="text-end">
                                             Sudah dibayarkan
                                         </td>
-                                        <td class="text-center">{{ number_format($order->pay, 2) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" class="text-end">Belum dibayarkan</td>
-                                        <td class="text-center">{{ number_format($order->due, 2) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" class="text-end">PPN</td>
-                                        <td class="text-center">{{ number_format($order->vat, 2) }}</td>
+                                        <td class="text-center">{{ number_format($order->pay, 2,'.',',') }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="text-end">Total</td>
-                                        <td class="text-center">{{ number_format($order->total, 2) }}</td>
+                                        <td class="text-center">{{ number_format($order->subtotal, 2,'.',',') }}</td>
                                     </tr>
                                 </tbody>
                             </table>

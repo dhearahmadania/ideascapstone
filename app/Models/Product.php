@@ -19,9 +19,9 @@ class Product extends Model
         'slug',
         'code',
         'quantity',
-        'quantity_alert',
-        'buying_price',
+       // 'quantity_alert',
         'selling_price',
+        'buying_price',
         'tax',
         'tax_type',
         'notes',
@@ -56,16 +56,16 @@ class Product extends Model
     protected function buyingPrice(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: fn($value) => $value / 100,
+            set: fn($value) => $value * 100,
         );
     }
 
     protected function sellingPrice(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
+            get: fn($value) => $value / 100,
+            set: fn($value) => $value * 100,
         );
     }
 
@@ -73,5 +73,12 @@ class Product extends Model
     {
         $query->where('name', 'like', "%{$value}%")
             ->orWhere('code', 'like', "%{$value}%");
+    }
+
+    public static function generateCode()
+    {
+        $latest = self::latest()->first();
+        $nextNumber = $latest ? intval(substr($latest->code, -4)) + 1 : 1;
+        return 'ID' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
 }
